@@ -1,6 +1,7 @@
 {
-  "colors" : [
+  "images" : [
     {
+      "filename" : "half_fill.pdf",
       "idiom" : "universal"
     }
   ],
