@@ -1,11 +1,12 @@
 //
 //  AppDelegate.swift
-//  MovieDB1
+//  MovieDB
 //
-//  Created by Ерош Айтжанов on 07.10.2024.
+//  Created by Ерош Айтжанов on 21.06.2024.
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = ViewController()
+        
         return true
     }
 
@@ -31,6 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    lazy var persistantContainer: NSPersistentContainer = {
+        let container = NSPersistentCloudKitContainer(name: "MovieDB")
+        container.loadPersistentStores{
+            (store, error) in
+            if let error = error {
+                fatalError("Unresolved error")
+            }
+        }
+        return container
+    }()
 
 }
 
