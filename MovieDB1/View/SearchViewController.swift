@@ -24,11 +24,25 @@ class SearchViewController:  UIViewController, UISearchResultsUpdating {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             movieData = []
             searchMovieTableView.reloadData()
+            startLabel.alpha = 0.5
+            searchMovieTableView.alpha = 0
             return
         }
+        startLabel.alpha = 0
+        searchMovieTableView.alpha = 1
         apiRequest(searchFor: searchText)
         
     }
+    
+    lazy var startLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Start searching for movies"
+        label.textAlignment = .center
+        label.alpha = 0.5
+        label.font = .systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     lazy var searchMovieTableView: UITableView = {
         let table = UITableView()
@@ -68,11 +82,16 @@ class SearchViewController:  UIViewController, UISearchResultsUpdating {
     
     func setupUI() {
         view.addSubview(searchMovieTableView)
+        view.addSubview(startLabel)
         
         searchMovieTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-            
+        }
+        
+        startLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     

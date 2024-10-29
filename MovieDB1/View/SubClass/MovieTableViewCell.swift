@@ -20,6 +20,12 @@ class MovieTableViewCell: UITableViewCell {
         return image
     }()
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     private lazy var ratingLabel:UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -75,8 +81,13 @@ class MovieTableViewCell: UITableViewCell {
     
     func conf(movie: Result) {
         self.movie = movie
+        
+        self.movieImage.image = nil
+        activityIndicator.startAnimating()
+        
         NetworkManager.shared.loadImage(posterPath: movie.posterPath) { data in
             self.movieImage.image = UIImage(data: data)
+            self.activityIndicator.stopAnimating()
         }
         movieTitle.text = movie.title
         ratingLabel.text = String(format: "%.1f", movie.voteAverage)
@@ -106,6 +117,7 @@ class MovieTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(movieImage)
         movieImage.addSubview(favoriteImage)
         movieImage.addSubview(ratingLabel)
+        movieImage.addSubview(activityIndicator)
         stackView.addArrangedSubview(movieTitle)
         stackView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -115,6 +127,9 @@ class MovieTableViewCell: UITableViewCell {
             make.height.equalTo(484)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide.snp.trailing).offset(-15)
             make.leading.equalToSuperview().offset(15)
+        }
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalTo(movieImage)
         }
         favoriteImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)

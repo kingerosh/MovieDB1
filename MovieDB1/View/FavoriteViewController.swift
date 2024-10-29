@@ -18,6 +18,16 @@ class FavoriteViewController: UIViewController {
 //        label.translatesAutoresizingMaskIntoConstraints = false
 //        return label
 //    }()
+    lazy var startLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Add favorite movies"
+        label.textAlignment = .center
+        label.alpha = 0.5
+        label.font = .systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var movieTableView: UITableView = {
         let table = UITableView()
         table.separatorStyle = .none
@@ -52,6 +62,7 @@ class FavoriteViewController: UIViewController {
     func setupUI() {
         //view.addSubview(movieLabel)
         view.addSubview(movieTableView)
+        view.addSubview(startLabel)
 //        movieLabel.snp.makeConstraints { make in
 //            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
 //            make.centerX.equalTo(view.safeAreaLayoutGuide.snp.centerX)
@@ -63,6 +74,9 @@ class FavoriteViewController: UIViewController {
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        startLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
@@ -82,6 +96,13 @@ class FavoriteViewController: UIViewController {
                 movies.append(movie)
             }
             movieData = movies
+            if movieData.isEmpty {
+                movieTableView.alpha = 0
+                startLabel.alpha = 0.5
+            } else {
+                startLabel.alpha = 0
+                movieTableView.alpha = 1
+            }
             
         }
         catch {
